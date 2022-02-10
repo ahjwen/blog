@@ -1,0 +1,753 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>一站式学习Redis 从入门到高可用分布式实践 | GivenSir`Blog</title><meta name="keywords" content="Redis"><meta name="author" content="GivenSir"><meta name="copyright" content="GivenSir"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="# 一站式学习Redis 从入门到高可用分布式实践 &gt; https:&#x2F;&#x2F;coding.imooc.com&#x2F;class&#x2F;151.html 系统学习Redis必备，企业级Redis开发运维经验 ## 相关推荐 - Redis 命令参考 -– # 第一章 Redis初识 ## 1.1 导学 &gt; 单机最高10万 - 高性能的Key-Value服务器 - 多种数据结构 - 丰富的功能 - 高可用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一站式学习Redis 从入门到高可用分布式实践">
+<meta property="og:url" content="https://blog.givensir.cn/posts/565150a88604.html">
+<meta property="og:site_name" content="GivenSir&#96;Blog">
+<meta property="og:description" content="# 一站式学习Redis 从入门到高可用分布式实践 &gt; https:&#x2F;&#x2F;coding.imooc.com&#x2F;class&#x2F;151.html 系统学习Redis必备，企业级Redis开发运维经验 ## 相关推荐 - Redis 命令参考 -– # 第一章 Redis初识 ## 1.1 导学 &gt; 单机最高10万 - 高性能的Key-Value服务器 - 多种数据结构 - 丰富的功能 - 高可用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-12-09T01:06:01.926Z">
+<meta property="article:modified_time" content="2021-12-09T01:06:01.927Z">
+<meta property="article:author" content="GivenSir">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://blog.givensir.cn/posts/565150a88604"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一站式学习Redis 从入门到高可用分布式实践',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-12-09 09:06:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/static.css"><meta name="generator" content="Hexo 5.4.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://givensir.oss-cn-hangzhou.aliyuncs.com/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">GivenSir`Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout hide-aside" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">一站式学习Redis 从入门到高可用分布式实践</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-09T01:06:01.926Z" title="发表于 2021-12-09 09:06:01">2021-12-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-09T01:06:01.927Z" title="更新于 2021-12-09 09:06:01">2021-12-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="一站式学习Redis 从入门到高可用分布式实践"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p># 一站式学习Redis 从入门到高可用分布式实践</p>
+<p>&gt; <a target="_blank" rel="noopener" href="https://coding.imooc.com/class/151.html">https://coding.imooc.com/class/151.html</a></p>
+<p>系统学习Redis必备，企业级Redis开发运维经验</p>
+<p>## 相关推荐</p>
+<p>- <a target="_blank" rel="noopener" href="http://doc.redisfans.com/index.html">Redis 命令参考</a></p>
+<p>-–</p>
+<p># 第一章 Redis初识</p>
+<p>## 1.1 导学</p>
+<p>&gt; 单机最高10万</p>
+<p>- 高性能的Key-Value服务器</p>
+<p>- 多种数据结构</p>
+<p>- 丰富的功能</p>
+<p>- 高可用的分布式支持</p>
+<p>### 目录</p>
+<p>- Redis 初识</p>
+<p>- API 的理解和使用</p>
+<p>- Redis 客户端的使用</p>
+<p>- 瑞士军刀 Redis</p>
+<p>- Redis 持久化的取舍和选择</p>
+<p>- Redis 复制的原理和优化</p>
+<p>- Redis Sentinel</p>
+<p>- Redis Cluster</p>
+<p>### 适合人群</p>
+<p>- Redis 初学者</p>
+<p>- Redis 进阶者</p>
+<p>- 希望了解 Redis 企业级开发运维技巧</p>
+<p>### 技术储备</p>
+<p>- 了解 Linux 命令的基本使用</p>
+<p>- 了解常用的数据结构</p>
+<p>- 了解一门编程语言</p>
+<p>### 授课思路</p>
+<p>- 开发运维结合</p>
+<p>- 原理接入</p>
+<p>- 实战案例分析</p>
+<p>### 课程目标</p>
+<p>- 全面了解 Redis 单机的相关功能</p>
+<p>- 全面了解 Redis 高可用和分布式方案</p>
+<p>- 理解企业级 Redis 的开发运维</p>
+<p>## 1.2 Redis 初识</p>
+<p>+ Redis 的前世今生</p>
+<p>  - 作者：Salvatore Sanfilippo(antirez)</p>
+<p>  - 现已加入 redislabs (redis云服务)</p>
+<p>+ Redis 是什么</p>
+<p>  - 开源(可定制化)</p>
+<p>  - 基于键值的存储服务系统</p>
+<p>  - 多种数据结构</p>
+<p>​    <img src="https://i.loli.net/2020/01/27/OjxkcD2htsn185Y.png" alt="数据结构.png"></p>
+<p>  - 高性能、功能丰富</p>
+<p>​    <img src="https://i.loli.net/2020/01/27/cd2fIZrzxJuKNp3.png" alt="哪些公司在用Redis.png"></p>
+<p>+ Redis 的特性回顾</p>
+<p>  - Redis 的特性</p>
+<p>​    - 速度快</p>
+<p>​      - 10w OPS(每秒实现10w读写)</p>
+<p>​      - 数据存在哪？内存</p>
+<p>​      - 什么语言写的？C语言(50000 line)</p>
+<p>​      - 线程模型？ 单线程</p>
+<p>​      - <img src="https://i.loli.net/2020/01/27/Nt8OBqxp4erw3XA.png" alt="速度快-内存.png"></p>
+<p>​    - 持久化</p>
+<p>​      - 断电不丢数据</p>
+<p>​      - Redis 所有数据包吃在内存中，对数据的更新将异步地保存到磁盘上。</p>
+<p>​    - 多种数据结构</p>
+<p>​      - <img src="https://i.loli.net/2020/01/27/OjxkcD2htsn185Y.png" alt="数据结构.png"></p>
+<p>​      - 多种数据结构-续(新版本)：</p>
+<p>​        - BitMaps:位图(很小内存高效存储)</p>
+<p>​        - HyperLogLog:超小内存唯一值计数</p>
+<p>​          - 缺点：计数有误差</p>
+<p>​        - GEO:地理信息定位(&gt;3.2版本)</p>
+<p>​    - 支持多种编辑语言</p>
+<p>​      - <img src="https://i.loli.net/2020/01/27/3iFeg9QSZ5dlXA4.png" alt="支持多种客户端语言.png"></p>
+<p>​    - 功能丰富</p>
+<p>​      - 发布订阅(消息队列)</p>
+<p>​      - Lua 脚本(自定义命令)</p>
+<p>​      - 事务</p>
+<p>​      - pipeline(指的是管道技术，指的是客户端允许将多个请求依次发给服务器，过程中而不需要等待请求的回复，在最后再一并读取结果即可。)</p>
+<p>​        - <a target="_blank" rel="noopener" href="https://www.cnblogs.com/littleatp/p/8419796.html">redis通过pipeline提升吞吐量</a></p>
+<p>​    - 简单</p>
+<p>​      - 23000 lines of code（23000行代码）</p>
+<p>​      - 不依赖外部库(like libevent)</p>
+<p>​      - 单线程</p>
+<p>​    - 主从复制</p>
+<p>​    - 高可用、分布式</p>
+<p>​      - 高可用 Redis-Sentine(v2.8)支持高可用</p>
+<p>​      - 分布式 Redis-Cluster(v3.0)支持分布式</p>
+<p>+ Redis 典型使用场景</p>
+<p>  &gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/chenxuegui1234/article/details/17767433">Redis应用场景1——简单场景</a></p>
+<p>  - 缓存系统</p>
+<p>​    - 对相关数据进行缓存</p>
+<p>  - 计数器</p>
+<p>​    &gt; <a target="_blank" rel="noopener" href="https://www.cnblogs.com/ShenJunHui6/p/11127737.html">redis实现计数器</a></p>
+<p>​    - 社交产品业务里有很多统计计数的功能，比如：</p>
+<p>​    - 用户： 总点赞数，关注数，粉丝数</p>
+<p>​    - 帖子： 点赞数，评论数，热度</p>
+<p>​    - 消息： 已读，未读，红点消息数</p>
+<p>​    - 话题： 阅读数，帖子数，收藏数</p>
+<p>​    - 文章的点赞数、页面的浏览数、网站的访客数、视频的播放数等</p>
+<p>  - 消息队列系统</p>
+<p>  - 排行榜</p>
+<p>​    &gt; <a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaoyan001/p/10782297.html">Redis实现排行榜功能(实战)</a></p>
+<p>​    - 游戏排行榜</p>
+<p>  - 社交网络</p>
+<p>​    &gt; 社交网络和Redis是天然吻合的；社交系统很多都可以使用 Redis 实现</p>
+<p>​    &gt; <a target="_blank" rel="noopener" href="http://www.dannysite.com/blog/116/">构建基于Redis的简单社交网络（一）</a></p>
+<p>​    - 粉丝数、关注数、最新时间轴列表</p>
+<p>  - 实时系统</p>
+<p>​    - 垃圾邮件处理、消息队列缓冲系统</p>
+<p>+ Redis 单机安装</p>
+<p>  - Redis 安装</p>
+<p>  - 可执行文件说明</p>
+<p>​    - redis-server &gt; Redis 服务器</p>
+<p>​    - redis-cli &gt; Redis 命令行客户端</p>
+<p>​    - redis-benchmark &gt; Redis 性能测试工具</p>
+<p>​    - 续：</p>
+<p>​      - redis-check-aof &gt; AOF 文件修复</p>
+<p>​      - redis-check-dump &gt; RDB 文件检查工具</p>
+<p>​      - redis-sentinel &gt; Sentinel服务器(2.8以后)</p>
+<p>  - 三种启动方法</p>
+<p>​    - 最简启动</p>
+<p>​      - redis-server</p>
+<p>​      - redis 服务查看：<code>ps -ef | grep redis</code></p>
+<p>​      - redis 端口查看：<code>netstat -antpl | grep redis</code></p>
+<p>​      - redis 连接查看：<code>redis-cli -h ip -p port ping</code></p>
+<p>​    - 动态参数启动</p>
+<p>​      - 自定义启动端口：<code>redis-server --port 6380</code></p>
+<p>​    - 配置文件启动</p>
+<p>​      - 配置文件启动：<code>redis-server configPath</code></p>
+<p>​    - 三种启动方式比较</p>
+<p>​      - 生成环境选择配置启动</p>
+<p>​      - 单机多实例配置文件可以用端口区分开</p>
+<p>  - 简单的客户端连接</p>
+<p>​    - <img src="https://i.loli.net/2020/01/27/9cABnXez2kFMSaN.png" alt="redis客户端连接.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/27/ykmqXIBA9HQfrue.png" alt="redis客户端返回值.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/27/3MbXpWFoL5CtHqB.png" alt="redis客户端返回值2.png"></p>
+<p>  - redis 常用配置</p>
+<p>​    - daemonize &gt; 是否是守护进程(no|yes)</p>
+<p>​    - port &gt; Redis 对外端口号</p>
+<p>​    - logfile &gt; Redis 系统日志</p>
+<p>​    - dir &gt; Redis 工作目录</p>
+<p>​    - 端口号：6379 ？</p>
+<p>​      - <img src="https://i.loli.net/2020/01/27/OWFkPEZ5JlGdAjv.png" alt="redis默认端口号.png"></p>
+<p>​    - 其他配置：</p>
+<p>​      - RDB config</p>
+<p>​      - AOF config</p>
+<p>​      - slow Log config</p>
+<p>​      - maxMemory</p>
+<p>​      - …</p>
+<p># 第二章 API的理解和使用</p>
+<p>## 课程目录</p>
+<p>### Redis API 的使用和理解</p>
+<p>+ 通用命令</p>
+<p>  - 通用命令</p>
+<p>​    - keys &gt; 计算 Redis 库的所有的键</p>
+<p>​      - <code>keys *</code> 遍历所有的key</p>
+<p>​      - <code>keys [pattern]</code> 遍历所有key</p>
+<p>​        &gt; pattern 可以当做通配符</p>
+<p>​        - <img src="https://i.loli.net/2020/01/27/q3QxRyVL8EpZTzA.png" alt="keys后续1.png"></p>
+<p>​      - keys 命令一般不在生产环境使用</p>
+<p>​      - <code>keys *</code> 怎么使用</p>
+<p>​        - 热备从节点</p>
+<p>​        - scan</p>
+<p>​          &gt; <a target="_blank" rel="noopener" href="https://www.cnblogs.com/wy123/p/10955153.html">Redis中的Scan命令的使用</a></p>
+<p>​          &gt; - Redis中有一个经典的问题，在巨大的数据量的情况下，做类似于查找符合某种规则的Key的信息，这里就有两种方式。</p>
+<p>​          &gt; - 一是keys命令，简单粗暴，由于Redis单线程这一特性，keys命令是以阻塞的方式执行的，keys是以遍历的方式实现的复杂度是 O(n），Redis库中的key越多，查找实现代价越大，产生的阻塞时间越长。</p>
+<p>​          &gt; - 二是scan命令，以非阻塞的方式实现key值的查找，绝大多数情况下是可以替代keys命令的，可选性更强</p>
+<p>​    - dbsize &gt; 计算库的总数</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/S1KPj2HoQymvpkC.png" alt="dbsize.png"></p>
+<p>​    - exists key &gt; 判断一个 key 是否存在</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/IUfE23roLvzeQTx.png" alt="exists.png"></p>
+<p>​    - del key [key …] &gt; 删除多个 key</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/QzYTLoanjMiA57k.png" alt="del.png"></p>
+<p>​    - expire key seconds &gt; 设置 key 过期时间</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/aAh9tEQWyOd8ifJ.png" alt="expire.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/bcWPMVHahqCogtF.png" alt="expire-1.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/tiGanQzljBHrqcV.png" alt="expire-2.png"></p>
+<p>​    - type key &gt; 设置 key 类型</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/mJfoDdXyMsRrGk6.png" alt="type.png"></p>
+<p>​    - 时间复杂度</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/XTdJSv5z8BP7Icx.png" alt="时间复杂度.png"></p>
+<p>  - 数据结构和内部结构编码</p>
+<p>​    - <img src="https://i.loli.net/2020/01/28/aJ8fSXH6O9zjqlh.png" alt="数据结构和内部编码.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/28/vmdIWbMl9iquJLj.png" alt="redisObject.png"></p>
+<p>  - 单线程架构</p>
+<p>​    - Redis 单线程，</p>
+<p>​      - 一瞬间只执行一条命令（串行结果），不会执行多条。</p>
+<p>​      - <img src="https://i.loli.net/2020/01/28/R3oi7EVdpJFyXCl.png" alt="单线程.png"></p>
+<p>​    - 单线程为什么这么快？</p>
+<p>​      - 纯内存</p>
+<p>​      - 非阻塞IO</p>
+<p>​        <img src="https://i.loli.net/2020/01/28/R3oi7EVdpJFyXCl.png" alt="单线程.png"></p>
+<p>​      - 避免线程切换和竞态消耗</p>
+<p>​    - 单线程需要注意什么？</p>
+<p>​      - 一次只运行一条命令</p>
+<p>​      - 拒绝长(慢)命令(数据过多时响应过久)</p>
+<p>​        &gt; keys,flushall,flushdb,slow lua script,mutil/exec,operate big value(collection)</p>
+<p>​      - 其实不是单线程(执行以下操作时，会有独立的线程操作)</p>
+<p>​        - fusnc file descriptor</p>
+<p>​        - close file descriptor</p>
+<p>+ 字符串类型</p>
+<p>  - 结构和命令</p>
+<p>​    - 字符串键值结构</p>
+<p>​      - 字符串值最大512MB，建议100kb左右。</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/co6gDxtmhziPTJv.png" alt="字符串键值结构.png"></p>
+<p>​    - 场景</p>
+<p>​      - 缓存</p>
+<p>​      - 计数器</p>
+<p>​      - 分布式锁</p>
+<p>​      - 等等</p>
+<p>​    - 命令</p>
+<p>​      - get,set,del</p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/dG5crHEheSjFTn8.png" alt="get,set,delpng.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/RibKU16u8lNPxoV.png" alt="get,set,del演示.png"></p>
+<p>​      - incr,decr,incrby,decrby</p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/dBqtLGNerTOfKpg.png" alt="命令2演示.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/IuNxRJjXAizq4lh.png" alt="命令2.png"></p>
+<p>​      - 快速实战</p>
+<p>​        - 实现如下功能：</p>
+<p>​          - 1. 记录网站每个用户个人主页的访问量？</p>
+<p>​            - <code>incr userid:pageview</code>(单线程：无竞争)每个命令独立执行，不会记错数。</p>
+<p>​          - 2. 缓存视频的基本信息(数据源在MySQL中)伪代码。</p>
+<p>​            - <img src="https://i.loli.net/2020/01/29/GPUbn8WSrkhqBev.png" alt="实战1.png"></p>
+<p>​            - <img src="https://i.loli.net/2020/01/29/CAvfePyDYjmVTtK.png" alt="实战1代码.png"></p>
+<p>​          - 3. 分布式ID生成器。</p>
+<p>​            &gt; 每次获取到的ID自增，三个应用并发获取。</p>
+<p>​            - <img src="https://i.loli.net/2020/01/29/MWNIg14brsdDuhF.png" alt="分布式ID.png"></p>
+<p>​            - <code>incr id</code>(原子操作)</p>
+<p>​      - set,setnx,set xx</p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/sip2XEPMtTJ9c5S.png" alt="命令4.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/FphlS3MzH1nKYqg.png" alt="命令4演示.png"></p>
+<p>​      - mget,mset</p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/LvNQDtE93uoKgGI.png" alt="命令5.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/uYafnN8QqpbkPiE.png" alt="命令5范例.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/xB3FJluQhMbsEaz.png" alt="1次mget.png"></p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/VivnDTj8FNYHWs3.png" alt="n次get.png"></p>
+<p>  - 内部编码</p>
+<p>  - 查漏补缺</p>
+<p>​    - getset,append,strlen</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/2mOKvnkY1pHoBxr.png" alt="命令6.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/aLTqNxngFEwXyQ9.png" alt="命令6演示.png"></p>
+<p>​    - incrbyfloat,getrange,setrange</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/H1idoqf8WOnVxMC.png" alt="命令7.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/rS3LIZmtePwaMs6.png" alt="命令7演示.png"></p>
+<p>  - 字符串总结</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/SHzMwtgpAC6FLdU.png" alt="字符串总结.png"></p>
+<p>+ 哈希类型</p>
+<p>  - 结构</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/B76mvSqtWdViyRK.png" alt="哈希键值结构.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/pSzjhRrZLG2QI3N.png" alt="哈希键值1.png"></p>
+<p>  - 特点</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/9AiQB1qSYmPU8Tl.png" alt="哈希特点.png"></p>
+<p>  - 重要API</p>
+<p>​    - hget,hset,hdel</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/iZtFfdBr7sJWl8R.png" alt="命令.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/4w9dSlocryWzChI.png" alt="命令演示.png"></p>
+<p>​    - hexists,hlen</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/Kj8l7quiCof9ycg.png" alt="命令2.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/WM6sG9B37O4pVKy.png" alt="命令2演示.png"></p>
+<p>​    - hmget,hmset</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/C6r3DyOsUHVg8zn.png" alt="命令3.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/p7mXi45Q3wVRL1j.png" alt="命令3演示.png"></p>
+<p>​    - hgetall,hvals,hkeys</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/7lF5OBCMUPX3Qco.png" alt="命令11.png"></p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/DQL9k7SgWolivpO.png" alt="命令11演示.png"></p>
+<p>  - hash vs string</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/2yinDaOlPoCFcJH.png" alt="对比.png"></p>
+<p>​    - 以 用户更新用户属性？三种方案：</p>
+<p>​      - 1. <img src="https://i.loli.net/2020/01/29/TGLxdNAw4CuQYzP.png" alt="对比1.png"></p>
+<p>​      - 2. <img src="https://i.loli.net/2020/01/29/oq59dXitnOPDZfh.png" alt="对比2.png"></p>
+<p>​      - 3. <img src="https://i.loli.net/2020/01/29/OsE9rUxdQfhe4TY.png" alt="对比3.png"></p>
+<p>​      - 三种方案比较：</p>
+<p>​        - <img src="https://i.loli.net/2020/01/29/XHMmGPELcre7TC8.png" alt="对比5.png"></p>
+<p>  - 查漏补缺</p>
+<p>​    - hsetnx,hincrby,hincrbyfloat</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/KcEaFCX6oIDMRnv.png" alt="命令12.png"></p>
+<p>  - 实战功能：</p>
+<p>​    - 1. 记录网站每个用户个人主页的访问量？</p>
+<p>​      - <code>hincrby user:1:info pageview count</code></p>
+<p>​    - 2. 缓存视频的基本信息(数据源在MySQL中)伪代码</p>
+<p>​      - <img src="https://i.loli.net/2020/01/29/EYQVp8afKguB34S.png" alt="命令4代码.png"></p>
+<p>  - 哈希总结</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/S92iQN5xywoFlCU.png" alt="哈希总结.png"></p>
+<p>+ 列表类型</p>
+<p>  - 列表结构</p>
+<p>​    - 有序列表</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/LibaGtW3cO9JrAp.png" alt="1.png"></p>
+<p>​    - 可以左插入、弹出和右插入、弹出。</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/mwKuxkT9gs6Zq3R.png" alt="2.png"></p>
+<p>​    - 计算长度</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/FOSrbMDQgIwynCz.png" alt="3-计算列表长度png.png"></p>
+<p>​    - 删除指定一个元素</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/YVKTC8PUDybt5d7.png" alt="4--删除一个元素.png"></p>
+<p>​    - 获取列表的一个子列表</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/dSyu3Ghw5BJlEcp.png" alt="5获取子元素.png"></p>
+<p>​    - 根据索引获取列表的指定元素</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/7gAf281bKLiBUvQ.png" alt="6--获取指定元素.png"></p>
+<p>  - 特点</p>
+<p>​    <img src="https://i.loli.net/2020/01/29/6rbpRxITlq4D8Ao.png" alt="7--特点.png"></p>
+<p>  - 重要API</p>
+<p>​    - 都以 L 开头，先以增删改插为例：</p>
+<p>​      - 增：</p>
+<p>​        - rpush 从右端插入值</p>
+<p>​          <img src="https://i.loli.net/2020/01/29/cmVYaR9DO5dUXIo.png" alt="API--1.png"></p>
+<p>​        - lpush 从左端插入值</p>
+<p>​          <img src="https://i.loli.net/2020/01/29/QeVx3EWNcP21qDH.png" alt="API--2.png"></p>
+<p>​        - linsert 指定的值前/后插入newValue</p>
+<p>​          <img src="https://i.loli.net/2020/01/29/wfsje1UTAWciGFB.png" alt="API--3.png"></p>
+<p>​        - lpop 从左侧弹出一个item</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/e9O8rFsqQwlofPv.png" alt="API--4.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/m8MRkeuLpWU7CZE.png" alt="API--4-1.png"></p>
+<p>​        - rpop 从右侧弹出一个item</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/aJXhRmAUt1POkzB.png" alt="API--5.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/7MLPaCiNKEYvOc5.png" alt="API--5-1.png"></p>
+<p>​      - 删：</p>
+<p>​        - lrem 根据count值，从列表中删除所有value相等的项</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/twnCBVP7WJGfivk.png" alt="API--6.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/7rdY62SsBf5uQmE.png" alt="API--6-1.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/ojsHONl27wxQhLz.png" alt="API--7.png"></p>
+<p>​        - ltrim 按照索引范围修剪列表</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/iUxnQEqeyvZ7AMw.png" alt="API--8.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/6gY3LEfzVnCFaDX.png" alt="API--8-1png.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/yrewjubLPCGOMvK.png" alt="API--9.png"></p>
+<p>​      - 查：</p>
+<p>​        - lrange 获取指定索引范围所有item</p>
+<p>​          <img src="https://i.loli.net/2020/01/29/lM7zfUskRvET14S.png" alt="API--10.png"></p>
+<p>​          - 获取索引0~2的数据</p>
+<p>​            <img src="https://i.loli.net/2020/01/29/Jr5XkcAm1zDPvVh.png" alt="API--10-1.png"></p>
+<p>​          - 获取索引1~-1的数据</p>
+<p>​            <img src="https://i.loli.net/2020/01/29/QLVHr4wNTAbxm7c.png" alt="API--10-2.png"></p>
+<p>​        - lindex 获取指定索引的item</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/l87EYrDcHLUpkbN.png" alt="API--11.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/DT8NjYZg4rpti5G.png" alt="API--11-1.png"></p>
+<p>​        - llen 获取列表长度</p>
+<p>​          <img src="https://i.loli.net/2020/01/29/CarAGPwI4LqKQhy.png" alt="API--12.png"></p>
+<p>​      - 改：</p>
+<p>​        - lset 设置列表指定索引的值为newValue</p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/HDt1c7gCxIjK4wA.png" alt="API--13.png"></p>
+<p>​          - <img src="https://i.loli.net/2020/01/29/Slg5WKGVTRwIvko.png" alt="API--14.png"></p>
+<p>  - 实战</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/yfYq3gGuIlP8jv1.png" alt="实战--1.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/y7Ng2BC5tEA4kmL.png" alt="实战--2png.png"></p>
+<p>  - 查漏补缺</p>
+<p>​    - blpop lpop阻塞版本，timeout是阻塞超时时间，timeout=0为永远不阻塞</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/h7FPcvJqW9eI2y5.png" alt="查漏补缺.png"></p>
+<p>​    - brpop rpop阻塞版本，timeout是阻塞超时时间，timeout=0为永远不阻塞</p>
+<p>  - 列表总结 TIPS</p>
+<p>​    \1. 栈：LRUSH + LPOP = Stack</p>
+<p>​    \2. 队列：LPUSH + RPOP = Queue</p>
+<p>​    \3. 控制一个有固定数量的队列(防止无限放大)，控制列表大小：LPUSH + LTRIM = Capped Collection</p>
+<p>​    \4. 消息队列：LPUSH + BRPOP = Message Queue</p>
+<p>+ 集合类型</p>
+<p>  - 集合结构</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/RQ3gpeEXZwNWsci.png" alt="集合结构.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/15WxrwJujdU8fPX.png" alt="添加元素.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/kDaE6zFJyBAHWrS.png" alt="添加重复元素.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/9mvAp1W6TGi8jYP.png" alt="删除元素.png"></p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/c2TQZgez1f7KkSD.png" alt="数据操作--1.png"></p>
+<p>  - 特点</p>
+<p>​    <img src="https://i.loli.net/2020/01/29/zgQHqnP1sJGUtZ6.png" alt="特点.png"></p>
+<p>  - 命令</p>
+<p>​    &gt; 以 s 开头</p>
+<p>​    - sadd,srem</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/JwsKNTe4vBczL2X.png" alt="命令.png"></p>
+<p>​      - sadd 向集合key添加元素(如果元素已存在则添加失败)</p>
+<p>​      - srem 将集合key中的元素移除掉</p>
+<p>​    - scard,sismember,srandmember,spop,smembers</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/UGYDB6I7RPXLFZx.png" alt="命令2.png"></p>
+<p>​      - scard 计算集合大小</p>
+<p>​      - sismember 判断元素是否在集合中</p>
+<p>​      - srandmember 从集合中随机挑count个元素</p>
+<p>​        - 不会破坏集合元素</p>
+<p>​      - spop 从集合中随机弹出一个元素</p>
+<p>​        - 从集合中弹出</p>
+<p>​      - smembers 获取集合所有元素</p>
+<p>​        - 无序</p>
+<p>​        - 小心使用(会堵塞)</p>
+<p>  - 集合内的API和实战</p>
+<p>​    - <img src="https://i.loli.net/2020/01/29/WwDn6tijdhPpoBO.png" alt="集合内的实战.png"></p>
+<p>​    - 实战-抽奖系统(spop)：</p>
+<p>​      <img src="https://i.loli.net/2020/01/29/aQJUnKx3ZDeRVEh.png" alt="抽奖系统.png"></p>
+<p>​    - 实战-Like、赞、踩：</p>
+<p>​      <img src="https://s2.ax1x.com/2020/01/29/1QjFHS.png" alt="1QjFHS.png"></p>
+<p>​      - 进行操作后存在文章的集合中。</p>
+<p>​        - 也可以使用集合、有序集合、列表。</p>
+<p>​    - 实战-标签(tag)</p>
+<p>​      <img src="https://s2.ax1x.com/2020/01/29/1QjlHU.png" alt="1QjlHU.png"></p>
+<p>​    - 小心使用这些命令，防止阻塞。</p>
+<p>​      - care size</p>
+<p>​      - care smembers</p>
+<p>  - 集合间API和实战</p>
+<p>​    - sdiff,sinter,sunion</p>
+<p>​      - 差集、交集、并集</p>
+<p>​      - <img src="https://s2.ax1x.com/2020/01/29/1Qj5VS.png" alt="1Qj5VS.png"></p>
+<p>​    - 实战-共同关注</p>
+<p>​      <img src="https://s2.ax1x.com/2020/01/29/1Qv9PJ.png" alt="1Qv9PJ.png"></p>
+<p>  - 总结 TIPS</p>
+<p>​    - 标签：sadd = Tagging</p>
+<p>​    - 随机数：spop/srandmember = Random item</p>
+<p>​    - 社交相关：sadd + sinter = Social Graph</p>
+<p>+ 有序集合类型</p>
+<p>  - 特点</p>
+<p>​    - 有序集合结构</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/YKFBa3ZUrOAdHQj.png" alt="有序集合结构.png"></p>
+<p>​    - 对比</p>
+<p>​      - 集合 Vs 有序集合</p>
+<p>​        - <img src="https://i.loli.net/2020/01/30/PxsEgjAznqh8U9v.png" alt="对比1.png"></p>
+<p>​      - 列表 Vs 有序集合</p>
+<p>​        - <img src="https://i.loli.net/2020/01/30/bhD9aHZ3eMwdFQA.png" alt="对比2.png"></p>
+<p>  - 重要API</p>
+<p>​    &gt; 以 z 开头</p>
+<p>​    - zadd 添加score和element(可以多个)。</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/gyYoFM7rbiG2P1q.png" alt="zadd.png"></p>
+<p>​    - zrem 删除元素(可以多个)</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/OZrbuGx6pzmEj4B.png" alt="zrem.png"></p>
+<p>​    - zscore 返回元素的分数</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/nkUx6PN1cYqKpA3.png" alt="zscore.png"></p>
+<p>​    - zincrby 增加或减少元素的分数</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/QgWwKIGcNu5zr2D.png" alt="zincrby.png"></p>
+<p>​    - zcard 返回元素的总个数</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/MIKO1yfh9Zme5Yu.png" alt="zcard.png"></p>
+<p>​    - zrank 获取某元素的排名(从小到大)</p>
+<p>​    - 代码示范：</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/oxy3RmZzpHkBX7h.png" alt="案例.png"></p>
+<p>​    - zrange 返回指定索引范围内的升序元素[分值]</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/qBmA4zkV6DdKtMJ.png" alt="zrange.png"></p>
+<p>​    - zrangebyscore key minScore maxScore [WITHSCORES] 返回指定分数范围内的升序元素[分值]</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/zVnTBatJ8q7sAPd.png" alt="zrangebyscore.png"></p>
+<p>​    - zcount key minScore maxScore 返回有序集合内在指定分数范围内的个数</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/WojSHNUm9thcs2y.png" alt="zcount.png"></p>
+<p>​    - zremrangebyrank 删除指定排名内的升序元素</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/B86XcvKZHoQr5mu.png" alt="zremrangebyrank.png"></p>
+<p>​    - zremrangebyscore 删除指定分数内的升序元素</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/ir3BnyaA7zgdhEC.png" alt="zremrangebyscore.png"></p>
+<p>​    - 代码示范：</p>
+<p>​      - <img src="https://i.loli.net/2020/01/30/Y4uyjEtWoCVqUeZ.png" alt="案例代码2.png"></p>
+<p>  - 实战</p>
+<p>​    - <img src="https://i.loli.net/2020/01/30/AjlmPegDTEBkNJr.png" alt="实战--排行榜.png"></p>
+<p>  - 查漏补缺</p>
+<p>​    - zrevrank key member</p>
+<p>​      - 返回有序集 key 中成员 member 的排名。其中有序集成员按 score 值递减(从大到小)排序。</p>
+<p>​    - zrevrange key start stop [WITHSCORES]</p>
+<p>​      - 返回有序集 key 中，指定区间内的成员。其中成员的位置按 score 值递减(从大到小)来排列。</p>
+<p>​    - zrevrangebyscore key max min [WITHSCORES] [LIMIT offset count]</p>
+<p>​      - 返回有序集 key 中， score 值介于 max 和 min 之间(默认包括等于 max 或 min )的所有的成员。有序集成员按 score 值递减(从大到小)的次序排列。</p>
+<p>​    - zinterstore destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM|MIN|MAX]</p>
+<p>​      - 计算给定的一个或多个有序集的交集，其中给定 key 的数量必须以 numkeys 参数指定，并将该交集(结果集)储存到 destination。默认情况下，结果集中某个成员的 score 值是所有给定集下该成员 score 值之和.</p>
+<p>​      - 文档：<a target="_blank" rel="noopener" href="http://doc.redisfans.com/sorted_set/zinterstore.html">http://doc.redisfans.com/sorted_set/zinterstore.html</a></p>
+<p>​    - zunionstore destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM|MIN|MAX]</p>
+<p>​      - 计算给定的一个或多个有序集的并集，其中给定 key 的数量必须以 numkeys 参数指定，并将该并集(结果集)储存到 destination 。默认情况下，结果集中某个成员的 score 值是所有给定集下该成员 score 值之 和 。</p>
+<p>​      - 文档：<a target="_blank" rel="noopener" href="http://doc.redisfans.com/sorted_set/zunionstore.html">http://doc.redisfans.com/sorted_set/zunionstore.html</a></p>
+<p>  - 有序集合 总结</p>
+<p>​    - <img src="https://i.loli.net/2020/01/30/tdKSwb9xDpXIEJ5.png" alt="总结.png"></p>
+<p># 第三章 Redis 客户端的使用</p>
+<p>&gt; 略过</p>
+<p># 第四章 瑞士军刀 Redis 的其他功能</p>
+<p>## 慢查询</p>
+<p>&gt; 找到系统中瓶颈的命令</p>
+<p>  - 生命周期</p>
+<p>  - 两个配置</p>
+<p>​    - slowlog-max-len</p>
+<p>​      <!-- 两个配置1 --></p>
+<p>​      \1. 先进先出队列</p>
+<p>​      \2. 固定长度</p>
+<p>​      \3. 保存在内存中</p>
+<p>  - 三个命令</p>
+<p>  - 运维经验</p>
+<p>## pipeline</p>
+<p>## 发布订阅</p>
+<p>## Bitmap</p>
+<p>## HyperLogLog</p>
+<p>## GEO</p>
+<p>+ GEO 是什么</p>
+<p>  - <img src="https://i.loli.net/2020/02/24/xoclMLKzE1Jr7Aa.png" alt="GEO是什么"></p>
+<p>  - 应用场景</p>
+<p>​    - <img src="https://i.loli.net/2020/02/24/Jm91OhWlNZqaI26.png" alt="应用场景"></p>
+<p>+ 5个城市经纬度</p>
+<p>  <img src="https://i.loli.net/2020/02/24/BPYji6GbQTWgeDA.png" alt="5个城市经纬度"></p>
+<p>+ 相关命令</p>
+<p>  - geoadd : 添加坐标</p>
+<p>​    <img src="https://i.loli.net/2020/02/24/oG2FS8gI69vajCh.png" alt="geoadd"></p>
+<p>  - geopos : 获取坐标</p>
+<p>​    <img src="https://i.loli.net/2020/02/24/4pMFSJGZ5TVqRXk.png" alt="geopos"></p>
+<p>  - geodist : 计算两地的距离</p>
+<p>​    <img src="https://i.loli.net/2020/02/24/KxoA8LwEaqDORzS.png" alt="geodist"></p>
+<p>  - georadius : 获取指定位置范围内的地址位置信息集合</p>
+<p>​    <img src="https://i.loli.net/2020/02/24/7RdEwxBLQeI9rNF.png" alt="georadius--api"></p>
+<p>​    <img src="https://i.loli.net/2020/02/24/u2MSpWVhlcjEoRs.png" alt="georadius--演示"></p>
+<p>​    </p>
+<p>+ 相关说明</p>
+<p>  - since 3.2+ (version)</p>
+<p>  - type getKey = zset (geo使用zset方式实现)</p>
+<p>  - 没有删除API：zrem key member (可以使用zset的API)</p>
+<p># 第五章 Redis 持久化的取舍和选择</p>
+<p>## 持久化的作用</p>
+<p>## AOF</p>
+<p>## RDB</p>
+<p>## RDB和AOF的抉择</p>
+<p># 第六章 常见的持久化开发运维问题</p>
+<p>## fork 操作</p>
+<p>## 进程外的开销</p>
+<p>## AOF 追加阻塞</p>
+<p>## 单机多实例部署</p>
+<p># 第七章 Redis 复制的原理与优化</p>
+<p># 第八章 Redis Sentinel</p>
+<p>## 主从复制高可用？</p>
+<p>## 架构说明</p>
+<p>## 安装配置</p>
+<p>## 客户端连接</p>
+<p>## 实现原理</p>
+<p>## 常见开发运维问题</p>
+<p># 第九章 初始 Redis Cluster</p>
+<p>## 呼唤集群</p>
+<p>## 数据分布</p>
+<p>## 搭建集群</p>
+<p>## 集群伸缩</p>
+<p>## 客户端路由</p>
+<p>## 集群原理</p>
+<p>## 开发运维常见问题</p>
+<p># 第十章 深入 Redis Cluster</p>
+<p>## 伸缩原理</p>
+<p>## 扩容集群</p>
+<p>## 缩容集群</p>
+<p># 第十一章 缓存设计与优化</p>
+<p>## 缓存的受益与成本</p>
+<p>## 缓存更新策略</p>
+<p>## 缓存粒度控制</p>
+<p>## 缓存穿透优化</p>
+<p>## 无底洞问题优化</p>
+<p>## 缓存雪崩优化</p>
+<p>## 热点 key 重建优化</p>
+<p># 第十二章 Redis 云平台CacheCloud</p>
+<p>## Redis 规模化运维</p>
+<p>## 快速构建</p>
+<p>## 机器部署</p>
+<p>## 应用接入</p>
+<p># 第十三章 课程总结</p>
+<p>\1. Redis 初始：单机安装部署(版本选择)，边界(使用场景)。</p>
+<p>\2. API理解和使用：单线程、5中数据结构使用和选择。</p>
+<p>\3. Redis客户端使用：jedis、redis-py等，客户端很“简单”。</p>
+<p>\4. 瑞士军刀Redis：慢查询、pipeline、发布订阅、bitmap等。</p>
+<p>\5. Redis持久化：RDB和AOF的优缺点和最佳实践。</p>
+<p>\6. Redis 复制：配置方法、全量和部分复制、常见运维问题。</p>
+<p>\7. Redis Sentinel：高可用、架构、“新”的客户端、基本原理。</p>
+<p>\8. Redis Cluster: 数据分布、架构、安装部署、扩容、客户端、常见问题。</p>
+<p>\9. 缓存设计与优化：粒度、更新策略、无底洞问题、穿透、雪崩、热点key。</p>
+<p>\10. CacheCloud: 平台化Redis开发运维工具。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">GivenSir</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.givensir.cn/posts/565150a88604.html">https://blog.givensir.cn/posts/565150a88604.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.givensir.cn" target="_blank">GivenSir`Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/11a94443eddc.html"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis 八股文</div></div></a></div><div class="next-post pull-right"><a href="/posts/79cec8aa5c6e.html"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MySQL 八股文</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/11a94443eddc.html" title="Redis 八股文"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-09</div><div class="title">Redis 八股文</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2022 By GivenSir</div><div class="footer_custom_text"><p><a style="margin-inline:5px"target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为 Hexo" alt="HEXO"></a><a style="margin-inline:5px"target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用 Butterfly" alt="Butterfly"></a><a style="margin-inline:5px"target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用 Jsdelivr 为静态资源提供CDN加速" alt="Jsdelivr"></a><a style="margin-inline:5px"target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由 GitHub 托管" alt="GitHub"></a><a style="margin-inline:5px"target="_blank"href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" alt="img" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p><br /><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="https://xiabor.com/img/icp.png"><span>备案号：京ICP备17003555号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'trf5NhTAewo1cM71Ad5np1f7-gzGzoHsz',
+      appKey: '6fICtj7zewtHufsaVzYk2yyr',
+      placeholder: '都看到了，要不鼓励我亿下~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="true" data-text="(๑•̀ㅂ•́)و✧,ヾ(◍°∇°◍)ﾉﾞ,||ヽ(*￣▽￣*)ノミ|Ю,欢迎━(*｀∀´*)ノ亻!" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"jsonPath":"/live2dw/assets/hijiki.model.json"},"log":false});</script></body></html>

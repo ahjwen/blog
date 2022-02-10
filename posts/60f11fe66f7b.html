@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>第二章:什么影响了MySQL性能 | GivenSir`Blog</title><meta name="keywords" content="mysql,全面讲解MySQL架构设计系列"><meta name="author" content="GivenSir"><meta name="copyright" content="GivenSir"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="影响性能的几个方面1. 服务器硬件     CPU、内存、磁盘IO 2. 服务器系统 3. 数据库存储引擎的选择     MyISAM：不支持事务，表级锁。     InnoDB：事务级存储引擎，完美支持行级锁，事务ACID特性。 4. 数据库参数配置（前几项加起来的因素没有这一项影响大） 5. 数据库结构设计和SQL语句     慢查询     数据库表结构设计     SQL语句的编写和优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章:什么影响了MySQL性能">
+<meta property="og:url" content="https://blog.givensir.cn/posts/60f11fe66f7b.html">
+<meta property="og:site_name" content="GivenSir&#96;Blog">
+<meta property="og:description" content="影响性能的几个方面1. 服务器硬件     CPU、内存、磁盘IO 2. 服务器系统 3. 数据库存储引擎的选择     MyISAM：不支持事务，表级锁。     InnoDB：事务级存储引擎，完美支持行级锁，事务ACID特性。 4. 数据库参数配置（前几项加起来的因素没有这一项影响大） 5. 数据库结构设计和SQL语句     慢查询     数据库表结构设计     SQL语句的编写和优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2020-08-31T14:07:13.000Z">
+<meta property="article:modified_time" content="2021-12-09T01:06:01.924Z">
+<meta property="article:author" content="GivenSir">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="全面讲解MySQL架构设计系列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://blog.givensir.cn/posts/60f11fe66f7b"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第二章:什么影响了MySQL性能',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-09 09:06:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/static.css"><meta name="generator" content="Hexo 5.4.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://givensir.oss-cn-hangzhou.aliyuncs.com/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">GivenSir`Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout hide-aside" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">第二章:什么影响了MySQL性能</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-31T14:07:13.000Z" title="发表于 2020-08-31 22:07:13">2020-08-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-09T01:06:01.924Z" title="更新于 2021-12-09 09:06:01">2021-12-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/%E5%85%A8%E9%9D%A2%E8%AE%B2%E8%A7%A3MySQL%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E7%B3%BB%E5%88%97/">全面讲解MySQL架构设计系列</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第二章:什么影响了MySQL性能"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="影响性能的几个方面"><a href="#影响性能的几个方面" class="headerlink" title="影响性能的几个方面"></a>影响性能的几个方面</h2><pre><code>1. 服务器硬件
+    CPU、内存、磁盘IO
+2. 服务器系统
+3. 数据库存储引擎的选择
+    MyISAM：不支持事务，表级锁。
+    InnoDB：事务级存储引擎，完美支持行级锁，事务ACID特性。
+4. 数据库参数配置（前几项加起来的因素没有这一项影响大）
+5. 数据库结构设计和SQL语句
+    慢查询
+    数据库表结构设计
+    SQL语句的编写和优化
+</code></pre>
+<h2 id="CPU-资源和可使用内存大小"><a href="#CPU-资源和可使用内存大小" class="headerlink" title="CPU 资源和可使用内存大小"></a>CPU 资源和可使用内存大小</h2><pre><code>计算密集型 的应用：CPU资源影响整个系统的性能，成为系统的瓶颈。
+对 MySQL 影响的资源：CPU、可用内存大小
+工作所需要的 热数据：远远超过可用内存大小时，I/O系统成为瓶颈。
+网络：可以看作是另外一种I/O资源，网络的性能影响，往往发生在大数据被查询时。特别是使用 MemCache （存储引擎）时，当缓存失效时，会产生大量的网络传输，从而影响服务的性能。
+
+当I/O出现瓶颈时，最有效的方法就是升级 I/O 子系统，增加更多的内存。
+
+网络、I/O资源影响 MySQL 性能的第二个因素。
+</code></pre>
+<h3 id="服务器硬件对-MySQL性能产生的的影响，如何进行优化"><a href="#服务器硬件对-MySQL性能产生的的影响，如何进行优化" class="headerlink" title="服务器硬件对 MySQL性能产生的的影响，如何进行优化"></a>服务器硬件对 MySQL性能产生的的影响，如何进行优化</h3><pre><code>    增加CPU和内存
+</code></pre>
+<h3 id="如何选择-CPU-，选择更快的-CPU-还是更多的-CPU（频率-amp-数量）！"><a href="#如何选择-CPU-，选择更快的-CPU-还是更多的-CPU（频率-amp-数量）！" class="headerlink" title="如何选择 CPU ，选择更快的 CPU 还是更多的 CPU（频率&amp;数量）！"></a>如何选择 CPU ，选择更快的 CPU 还是更多的 CPU（频率&amp;数量）！</h3><h4 id="CPU-选购需要了解的前提："><a href="#CPU-选购需要了解的前提：" class="headerlink" title="CPU 选购需要了解的前提："></a>CPU 选购需要了解的前提：</h4><pre><code>    + 我们的应用是 CPU 密集型的吗？
+        CPU 密集型的需要更好地 CPU ，而不是更多的 CPU。
+        当前的 MySQL 不支持多 CPU 对同一 SQL 并发处理。
+    + 我们系统的并发量（吞吐量）如何？
+        衡量数据库处理能力的指标：
+            QPS（同时处理SQL的数量）每秒钟
+            这里的并发是 纳秒级 的，这个取决于 MySQL 执行情况。
+    + MySQL 通常应用在 Web 类应用：核心数量比频率重要。
+    + 我们所使用 MySQL 的版本也可以决定如何选择 CPU？
+        老版本的 MySQL 对多核的 CPU 支持不好，5.0 之前版本这个限制很严重。
+        现在的 5.6/5.7 对多核CPU支持有了改善，可以放心使用16核、32核的 CPU。
+    + 选择 32位 还是 64位 的 CPU？
+        完全多余的选择，64位 架构已经是默认配置，32位 服务器也不好买到。同时 MySQL 对 64位 已经做到了完美的支持。
+    注意事项：
+        64位 架构CPU运行 32位 操作系统。特别是云服务器、虚拟主机、公司自己服务器。
+        32位 操作系统，不能使用大量的内存；任何一个单独的进程不能4G内存。
+        MySQL 是单线程，如果使用了 32位 操作系统是对 MySQL 性能极大地限制。
+</code></pre>
+<h4 id="内存选择"><a href="#内存选择" class="headerlink" title="内存选择"></a>内存选择</h4><pre><code>    内存的大小直接影响了 MySQL的性能；内存的I/O性能高于磁盘，就是和SSD、Fusion-IO高速磁盘，内存的I/O速率也高的多。
+    把数据存到内存进行读取可以提高 MySQL的性能。
+
+    常用的 MySQL 存储引擎：
+        MyISAM：索引放在内存，数据放在操作系统缓存。
+        InnoDB：索引、数据同时放在内存中缓存，从而提升数据库的运行效率。
+
+    提示：
+        1. 内存是越多越好，但是对性能影响有限，不能无限的增加内存而无限的增加性能。
+        数据库可用内存是有限的：一般当缓存的数据和磁盘存储的数据一样时，也就是说当所有的数据都缓存到内存时，在增加内存的大小是没有意义的。
+        举栗子：
+            数据库数据大小是100G，内存只有64G情况下，可以增加服务器内存至128G，扩大数据库缓冲区。
+            数据库数据大小是100G，内存是256G情况下，是不能增加内存的方式，获取性能提升。也不是绝对的，多余的内存，可以增加操作系统其他服务的性能。
+        2. 缓存对读有益处，对写也有益处。
+    内存的选择问题：
+    内存的主频和CPU主频是类似的，建议选择服务器支持主频的最高的内存。频率越高内存读取速度越快。（主板支持的最大内存频率）
+
+    服务器内存是组成购买的。每个通道的内存：相同的品牌、颗粒、频率、电压、效验技术和型号的内存条。
+    单挑容量要尽可能的大，但这个所需要的成本就要高；可以根据数据库大小选择内存。要根据增长速度，增长幅度考虑，可以选择一些更大的，减少短时间内升级内存问题。
+</code></pre>
+<h2 id="磁盘的配置和选择"><a href="#磁盘的配置和选择" class="headerlink" title="磁盘的配置和选择"></a>磁盘的配置和选择</h2><p>内存对数据库性能影响很重要；很多时候要牺牲内存为代价，换取I/O子系统，因为最终数据要在磁盘持久存储。</p>
+<h3 id="1-使用传统机器硬盘"><a href="#1-使用传统机器硬盘" class="headerlink" title="1. 使用传统机器硬盘"></a>1. 使用传统机器硬盘</h3><pre><code>- 存储空间大
+- 价格低
+- 读/写较慢
+- 使用最多
+- 最常见
+
+传统机器硬盘读取数据的过程（工作机制）：
+1. 移动磁头到磁盘表面上的正确位置（访问时间）
+2. 等待磁盘旋转，使的所需的数据在磁头之下（访问时间）
+3. 等待磁盘旋转过去，所有所需的数据都被磁头读出（传输速度）
+
+如何选择传统机器硬盘：
+1. 存储容量
+2. 传输速度
+3. 访问时间
+4. 主轴转速
+5. 物理尺寸
+</code></pre>
+<h3 id="2-使用RAID增强传统机器硬盘的性能"><a href="#2-使用RAID增强传统机器硬盘的性能" class="headerlink" title="2. 使用RAID增强传统机器硬盘的性能"></a>2. 使用RAID增强传统机器硬盘的性能</h3><h3 id="3-使用固态存储SSD和PCIe卡"><a href="#3-使用固态存储SSD和PCIe卡" class="headerlink" title="3. 使用固态存储SSD和PCIe卡"></a>3. 使用固态存储SSD和PCIe卡</h3><h3 id="4-使用网络存储NAS和ASN"><a href="#4-使用网络存储NAS和ASN" class="headerlink" title="4. 使用网络存储NAS和ASN"></a>4. 使用网络存储NAS和ASN</h3></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">GivenSir</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.givensir.cn/posts/60f11fe66f7b.html">https://blog.givensir.cn/posts/60f11fe66f7b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.givensir.cn" target="_blank">GivenSir`Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql</a><a class="post-meta__tags" href="/tags/%E5%85%A8%E9%9D%A2%E8%AE%B2%E8%A7%A3MySQL%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E7%B3%BB%E5%88%97/">全面讲解MySQL架构设计系列</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/e3102fba199f.html"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">第一章:实例和故事</div></div></a></div><div class="next-post pull-right"><a href="/posts/60bb9c4405f4.html"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第三章-MySQL基准测试</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/60bb9c4405f4.html" title="第三章-MySQL基准测试"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-31</div><div class="title">第三章-MySQL基准测试</div></div></a></div><div><a href="/posts/7efe39a686b1.html" title="第四章:MySQL数据结构优化"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-31</div><div class="title">第四章:MySQL数据结构优化</div></div></a></div><div><a href="/posts/e3102fba199f.html" title="第一章:实例和故事"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-31</div><div class="title">第一章:实例和故事</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2022 By GivenSir</div><div class="footer_custom_text"><p><a style="margin-inline:5px"target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为 Hexo" alt="HEXO"></a><a style="margin-inline:5px"target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用 Butterfly" alt="Butterfly"></a><a style="margin-inline:5px"target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用 Jsdelivr 为静态资源提供CDN加速" alt="Jsdelivr"></a><a style="margin-inline:5px"target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由 GitHub 托管" alt="GitHub"></a><a style="margin-inline:5px"target="_blank"href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" alt="img" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p><br /><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="https://xiabor.com/img/icp.png"><span>备案号：京ICP备17003555号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'trf5NhTAewo1cM71Ad5np1f7-gzGzoHsz',
+      appKey: '6fICtj7zewtHufsaVzYk2yyr',
+      placeholder: '都看到了，要不鼓励我亿下~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="true" data-text="(๑•̀ㅂ•́)و✧,ヾ(◍°∇°◍)ﾉﾞ,||ヽ(*￣▽￣*)ノミ|Ю,欢迎━(*｀∀´*)ノ亻!" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"jsonPath":"/live2dw/assets/hijiki.model.json"},"log":false});</script></body></html>
